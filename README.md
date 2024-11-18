@@ -27,7 +27,7 @@ This code defines a Jupiter notebook that creates poc for RAG application using 
 
 This code creates a chat application that can answer user queries by retrieving and processing relevant information from a PDF document. It utilizes advanced techniques like document splitting, vector storage to enhance the user experience. Overall, the integration of the LangChain framework allows for flexible and powerful AI interactions.
 
-# ChatbotLanggraph.ipynb #
+# ChatbotUsingLanggraph.ipynb #
 
 The code demonstrate the chatbot implemented using langgraph and openai model. It also Visualizes the full workflow using LangGraph by representing the steps as nodes and transitions as edges.
 
