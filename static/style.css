@@ -11,9 +11,9 @@ body,html{
 	margin-bottom: auto;
 }
 .card{
-	height: 500px;
+	height: 100%;
 	border-radius: 15px !important;
-	background-color: rgba(0,0,0,0.4) !important;
+	background-color: rgba(114, 109, 109, 0.4) !important;
 }
 .contacts_body{
 	padding:  0.75rem 0 !important;
@@ -33,6 +33,7 @@ border-radius: 0 0 15px 15px !important;
 }
 .container{
 	align-content: center;
+	height: 100%;
 }
 .search{
 	border-radius: 15px 0 0 15px !important;
