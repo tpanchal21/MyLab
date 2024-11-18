@@ -29,7 +29,7 @@ This code creates a chat application that can answer user queries by retrieving 
 
 # ChatbotLanggraph.ipynb #
 
-TBD
+The code demonstrate the chatbot implemented using langgraph and openai model. It also Visualizes the full workflow using LangGraph by representing the steps as nodes and transitions as edges.
 
 # first_ML_project.ipynb #
 
