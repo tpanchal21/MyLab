@@ -27,6 +27,10 @@ This code defines a Jupiter notebook that creates poc for RAG application using 
 
 This code creates a chat application that can answer user queries by retrieving and processing relevant information from a PDF document. It utilizes advanced techniques like document splitting, vector storage to enhance the user experience. Overall, the integration of the LangChain framework allows for flexible and powerful AI interactions.
 
+# ChatbotLanggraph.ipynb #
+
+TBD
+
 # first_ML_project.ipynb #
 
 The code imports the pandas library and loads a dataset (delaney_solubility_with_descriptors.csv) into a DataFrame (df). It does Target and Features Separation. The dataset is split into training and testing sets (80% training, 20% testing) using train_test_split from sklearn. Model is build using Linear regression and Random forest. The code ends with Model comparison in single datafram and data visualization.
