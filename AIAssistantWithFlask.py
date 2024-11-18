@@ -45,7 +45,7 @@ def create_db(docs):
     vectorStore = Chroma.from_documents(
         documents=docs,
         collection_name="rag-chroma",
-        embedding=embeddings.OllamaEmbeddings(model='nomic-embed-text'),
+        embedding=OpenAIEmbeddings(),
     )
     return vectorStore
 
