@@ -1,4 +1,4 @@
-Try by personal AI Assistant click here http://54.144.68.184:5000/
+#Try by personal AI Assistant click here http://54.144.68.184:5000/#
 
 Code examples in the github repo illustrate my practical expertise with AI/ML projects: Generative AI chatbots, RAG application, Langchain chain implemention, tracing with LangSmith, predictive analytics, and other AI-powered solutions. Below is the small description for each of them.
 
