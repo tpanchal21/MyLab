@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -12,11 +12,9 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores.faiss import FAISS
 from langchain_core.messages import HumanMessage, AIMessage
 
 from langchain_community.vectorstores import Chroma
-from langchain_ollama import embeddings
 from langchain_community.document_loaders import PyPDFLoader
 
 def get_documents_from_web(url):
@@ -122,4 +120,5 @@ def get_Chat_response(text):
     return response
 
 if __name__ == '__main__':
-    chat_advance.run(debug=True)
+    chat_advance.run(debug=True, port=5000, host="0.0.0.0")
+    

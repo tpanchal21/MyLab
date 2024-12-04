@@ -1,0 +1,10 @@
+langchain
+langgraph
+langchain_community
+langchain_openai
+tiktoken
+Chromadb
+pypdf
+arxiv
+wikipedia
+flask
