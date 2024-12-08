@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tushar's AI Assistant</title>
+    <title>Tushar's RAG based AI Assistant</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -45,8 +45,14 @@
                   <span class="online_icon"></span>
                 </div>
                 <div class="user_info">
-                  <span>AI Assistant</span>
-                  <p>Ask me about Tushar's professionl career and life.</p>
+                  <span>Tushar's RAG based AI Assistant</span>
+                  <p>Feel free to ask me about Tushar's professional career and life. You can also upload your PDF file to receive responses based on its content. Additionally, you can request a Wiki search.
+			            This multiuser history aware chatbot utilizes LangGraph routing, LangChain, and Retrieval-Augmented Generation (RAG) implementation.
+                    <form method="post"  class="input-group-text send_btn" enctype="multipart/form-data" action="/upload">
+                    <input type="file"  class="small-button" name="file" accept=".pdf" required>
+                    <button type="submit" class="small-button" >Upload</button>
+                    </form>
+                  </p>
                 </div>
               </div>
             </div>

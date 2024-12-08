@@ -26,6 +26,7 @@ body,html{
 .card-header{
 	border-radius: 15px 15px 0 0 !important;
 	border-bottom: 0 !important;
+	background-color: #180703 !important;
 }
 .card-footer{
 border-radius: 0 0 15px 15px !important;
@@ -216,6 +217,20 @@ border-radius: 0 0 15px 15px !important;
 .action_menu ul li:hover{
 	cursor: pointer;
 	background-color: rgba(0,0,0,0.2);
+}
+.small-button {
+	background-color: #022703; /* Green background */
+	border: none; /* Remove borders */
+	color: white; /* White text */
+	padding: 5px 10px; /* Small padding */
+	text-align: center; /* Center text */
+	text-decoration: none; /* No underline */
+	display: inline-block; /* Inline block */
+	font-size: 10px; /* Small font size */
+	margin: 4px 2px; /* Margin for spacing */
+	cursor: pointer; /* Pointer cursor on hover */
+	border-radius: 4px; /* Rounded corners */
+	transition: background-color 0.3s; /* Smooth background change */
 }
 @media(max-width: 576px){
 	.contacts_card{
