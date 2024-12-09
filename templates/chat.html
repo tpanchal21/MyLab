@@ -49,7 +49,6 @@
                   <p>Feel free to ask me about Tushar's professional career and life. You can also upload your PDF file to receive responses based on its content. Additionally, you can request a Wiki search.
 			            This multiuser history aware chatbot utilizes LangGraph routing, LangChain, and Retrieval-Augmented Generation (RAG) implementation.
                     <form method="post"  class="input-group-text send_btn" enctype="multipart/form-data" action="/upload">
-                    <input type="file"  class="small-button" name="file" accept=".pdf" required>
                     <button type="submit" class="small-button" >Upload</button>
                     </form>
                   </p>
@@ -105,7 +104,8 @@
             str_time +
             '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
 
-          $("#text").val("");
+          $("#text").val("Please wait chatbot is responding....");
+          $("#text").prop("disabled", true);      
           $("#messageFormeight").append(userHtml);
 
           scrollToBottom();
@@ -117,6 +117,8 @@
             type: "POST",
             url: "/get",
           }).done(function (data) {
+            $("#text").val("");
+            $("#text").prop("disabled", false);
             var botHtml =
               '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://cdn0.iconfinder.com/data/icons/artificial-intelligence-butterscotch-vol-2/256/Intelligent_Assistant-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' +
               data +
