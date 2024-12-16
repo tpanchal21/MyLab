@@ -33,9 +33,9 @@ This code creates a chat application that can answer user queries by retrieving 
 
 The code demonstrate the chatbot implemented using langgraph and openai model. It also Visualizes the full workflow using LangGraph by representing the steps as nodes and transitions as edges.
 
-# first_ML_project.ipynb #
+# MLProjLinearRegression.ipynb, MLProjRandomForest.ipynb MLProjXGBoost.ipynb #
 
-The code imports the pandas library and loads a dataset (delaney_solubility_with_descriptors.csv) into a DataFrame (df). It does Target and Features Separation. The dataset is split into training and testing sets (80% training, 20% testing) using train_test_split from sklearn. Model is build using Linear regression and Random forest. The code ends with Model comparison in single datafram and data visualization.
+The code imports the pandas library and loads a dataset (delaney_solubility_with_descriptors.csv) into a DataFrame (df). It does Target and Features Separation. The dataset is split into training and testing sets (80% training, 20% testing) using train_test_split from sklearn. Model is build using Linear regression and Random forest and XGBoost. The code ends with Model comparison in single datafram and data visualization.
 
 Code demonstrates a basic workflow for a machine learning project, including data loading, preparation, model training (for Linear Regression and Random Forest), performance evaluation, and visualization of the results.
 
