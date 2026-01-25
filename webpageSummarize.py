@@ -27,7 +27,7 @@ from openai import OpenAI
 
 # Set your secret key. Remember to switch to your live secret key in production.
 # See your keys here: https://dashboard.stripe.com/apikeys
-stripe.api_key = 'sk_test_51QWgpwF34Mmm3mipmecR5vqLalAcNVsbpKAPeKonfeZk4fIjgbxQ6fJ3s43C3kQkgTYG79h1KoyoON94zbKqKniC00miSFmDy1'
+stripe.api_key = '<stripe key>'
 
 @chat_advance.route('/fulfill-checkout', methods=['GET'])
 def fulfill_checkout():

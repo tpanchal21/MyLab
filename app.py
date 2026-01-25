@@ -24,7 +24,7 @@ def chat():
 def get_chat_response_openai(text):
     client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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",
+    api_key="<openrouter_api_key>",
     )
 
     # First API call with reasoning
