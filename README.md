@@ -1,4 +1,4 @@
-# Try [my personal AI Assistant](https://app.amesay.com/) and [Google AI Summerizer](https://amesay.com/summarizer.html) chrome extension #
+# Try [my personal AI Assistant](https://3.150.194.51/) #
 
 Code examples in the github repo illustrate my practical expertise with AI/ML projects: Generative AI chatbots, RAG application, Langchain chain implemention, tracing with LangSmith, predictive analytics, and other AI-powered solutions. Below is the small description for each of them.
 
