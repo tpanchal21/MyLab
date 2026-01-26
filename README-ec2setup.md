@@ -2,7 +2,7 @@
 # Set the amazon linux instance
 
 
-sudo chown ec2-user:ec2-user
+sudo chown ec2-user:ec2-user .
 
 sudo su
 
@@ -37,6 +37,8 @@ Using self-signed cert:
     app:app \
     > gunicorn.log 2>&1 &
 
+    gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:443 app:app
+
 Open firewall / security group
     Allow:
     TCP 443
@@ -51,3 +53,10 @@ Manage the process
 
     Logs
     tail -f gunicorn.log
+
+
+sudo yum install -y certbot
+
+certbot --version
+
+sudo certbot certonly --standalone -d amesay.com
