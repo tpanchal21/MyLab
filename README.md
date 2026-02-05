@@ -6,7 +6,7 @@ Code examples in the github repo illustrate my practical expertise with AI/ML pr
 
 This code defines a Flask web application that interacts with a chat-based AI model using the LangChain framework.
 
-<img width="476" alt="image" src="https://github.com/user-attachments/assets/234b4a8b-d902-486b-bdb3-7307ba88743f">
+<img width="476" alt="image" src="[https://github.com/user-attachments/assets/234b4a8b-d902-486b-bdb3-7307ba88743f](https://github.com/tpanchal21/MyLab/blob/main/docs/Screenshot-chatbot.png)">
 
 
 This code creates a chat application that can answer user queries by retrieving and processing relevant information from a PDF document. It utilizes advanced techniques like document splitting, vector storage, and history-aware retrieval to enhance the user experience. Overall, the integration of the LangChain framework allows for flexible and powerful AI interactions.
