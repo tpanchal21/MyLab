@@ -5,6 +5,7 @@ import markdown
 from os import getenv
 import json
 import os
+import requests
 
 import uuid
 from dotenv import load_dotenv
@@ -78,7 +79,7 @@ def get_documents_from_pdf(filenames, chunk_size=500, overlap=100):
 # Load documents once
 # -----------------------
 if collection.count() == 0:
-    pdf_chunks = get_documents_from_pdf("Resume.pdf")
+    pdf_chunks = get_documents_from_pdf("Resume-AI.pdf")
 
     collection.add(
         documents=[c["text"] for c in pdf_chunks],
@@ -124,28 +125,80 @@ def write_session_history_to_file(filename, history):
             ensure_ascii=False
         )
 
+def is_about_tushar(text):
+    """
+    Check if the question is about Tushar Panchal.
+    """
+    keywords = ["tushar", "panchal", "he", "him", "his", "experience", "background"]
+    return any(keyword.lower() in text.lower() for keyword in keywords)
+
+
+def get_wiki_answer(text):
+    """
+    Fetch answer from Wikipedia.
+    """
+    try:
+        response = requests.get(
+            "https://en.wikipedia.org/w/api.php",
+            params={
+                "action": "query",
+                "format": "json",
+                "titles": text,
+                "prop": "extracts",
+                "explaintext": True
+            }
+        )
+        data = response.json()
+        pages = data["query"]["pages"]
+        page = next(iter(pages.values()))
+        return page.get("extract", "No information found on Wikipedia.")
+    except Exception as e:
+        return f"Could not retrieve from Wikipedia: {str(e)}"
+
+
+def wiki_answer(text):
+     ### Working With Tools
+    from langchain_community.utilities import WikipediaAPIWrapper
+    from langchain_community.tools import WikipediaQueryRun
+
+    ## wikipedia Tools
+    api_wrapper=WikipediaAPIWrapper(top_k_results=1,doc_content_chars_max=500)
+    wiki=WikipediaQueryRun(api_wrapper=api_wrapper)
+
+
+    # Wiki search
+    docs = wiki.invoke({"query": text})
+    return docs
+
 def get_chat_response_openai(text):
     resp = ""
     try:
         history = get_chat_history()
 
-        # ---- Retrieve from Chroma
-        results = collection.query(
-            query_texts=[text],
-            n_results=3
-        )
-
-        retrieved_docs = results["documents"][0]
-        context = "\n".join(retrieved_docs)
+        # Check if question is about Tushar
+        about_tushar = is_about_tushar(text)
+        print ("about tushar: ", about_tushar)
+        if about_tushar:
+            # Retrieve from Chroma for Tushar-related questions
+            results = collection.query(
+                query_texts=[text],
+                n_results=5
+            )
+            retrieved_docs = results["documents"][0]
+            context = "\n".join(retrieved_docs)
+        else:
+            # Retrieve from Wikipedia for other questions
+            context = wiki_answer(text)
         
+        #return context
         # ---- Build messages (history aware)
         messages = [
             {
                 "role": "system",
                 "content": (
-                    "You are Tushar's RAG based AI Assistant. Answer all salutations."
-                    "Use the provided context ONLY when asked about Tushar. "
-                    "If the answer is not found, look in chat history otherwise, say 'I do not know the answer to that. I can answer questions about Tushar Panchal.'."
+                    "You are Tushar's RAG based AI Assistant. Answer all salutations. "
+                    "Use the provided context to answer the question. "
+                    "If the answer is not found in the context, look in chat history otherwise, say 'I do not know the answer to that. I can answer questions about Tushar Panchal.'."
                 )
             }
         ]
@@ -169,20 +222,17 @@ def get_chat_response_openai(text):
 
         # First API call with reasoning
         response = client.chat.completions.create(
-        model= "arcee-ai/trinity-mini:free", #"gpt-3.5-turbo-1106",
+        model= "arcee-ai/trinity-mini:free",
         messages=messages,
-        #extra_body={"reasoning": {"enabled": True}},
         temperature=0
         )
 
         # Extract the assistant message with reasoning_details
         resp = response.choices[0].message.content
 
-        #print(res)
-
         return markdown.markdown(resp)
     except Exception as e:
-        resp= f"<b>Error occured:</b> {e.message}"
+        resp= f"<b>Error occured:</b> {str(e)}"
         return resp
     finally:
         # Save history
@@ -197,4 +247,3 @@ def get_chat_response_openai(text):
 
 if __name__ == '__main__':
     app.run()
-    
