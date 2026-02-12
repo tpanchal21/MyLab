@@ -1,22 +1,27 @@
 from flask import Flask, render_template, request, session
 from dotenv import load_dotenv
-
+import markdown
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.prompts import MessagesPlaceholder
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_core.prompts import MessagesPlaceholder
-from langchain.chains.history_aware_retriever import create_history_aware_retriever
-from langchain.chains import create_retrieval_chain
+#from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_classic.chains.history_aware_retriever import create_history_aware_retriever
+from langchain_classic.chains import create_retrieval_chain
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 
 from langchain_community.document_loaders import WebBaseLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_classic.text_splitter import RecursiveCharacterTextSplitter
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.messages import HumanMessage, AIMessage
 
 from langchain_community.vectorstores import Chroma
 from langchain_community.document_loaders import PyPDFLoader
+### Working With Tools
+from langchain_community.utilities import ArxivAPIWrapper,WikipediaAPIWrapper
+from langchain_community.tools import ArxivQueryRun,WikipediaQueryRun
 
 from typing import Annotated, List
 
@@ -24,7 +29,7 @@ from typing_extensions import TypedDict
 from typing import Literal
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 
 from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import Chroma
@@ -69,8 +74,6 @@ def retrieve(state):
 
     Question: {input}""")
     question = state["messages"][-1].content
-    from langchain.chains import create_retrieval_chain
-    from langchain.chains.combine_documents import create_stuff_documents_chain
 
     retriever=vectorStore.as_retriever()
     document_chain=create_stuff_documents_chain(llm,prompt)
@@ -96,26 +99,18 @@ def wiki_search(state):
         state (dict): Updates documents key with appended web results
     """
     
-
     question = question = state["messages"][-1].content
 
-    if "wiki search" not in question:
-        return {"messages":llm.invoke(state["messages"])}
+    # if "wiki search" not in question:
+    #     return {"messages":llm.invoke(state["messages"])}
     
-    ### Working With Tools
-    from langchain_community.utilities import ArxivAPIWrapper,WikipediaAPIWrapper
-    from langchain_community.tools import ArxivQueryRun,WikipediaQueryRun
-
-    ## Arxiv and wikipedia Tools
-    arxiv_wrapper=ArxivAPIWrapper(top_k_results=1, doc_content_chars_max=500)
-    arxiv=ArxivQueryRun(api_wrapper=arxiv_wrapper)
-
+    ## wikipedia Tools
     api_wrapper=WikipediaAPIWrapper(top_k_results=1,doc_content_chars_max=500)
     wiki=WikipediaQueryRun(api_wrapper=api_wrapper)
 
-
     # Wiki search
     docs = wiki.invoke({"query": question})
+    print("---WIKI SEARCH RESULTS---",docs)
     #print(docs["summary"])
     wiki_results = docs
     #wiki_results = page_content=wiki_results)
@@ -210,17 +205,20 @@ def question_router(question):
 
 chat_advance = Flask(__name__)
 chat_advance.secret_key = "chatbotusinglanggraphlangchain"
-load_dotenv(dotenv_path=".env", override=True)
+load_dotenv()
 
 @chat_advance.route("/")
 def index():
     return render_template('chat.html')
 
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", api_key="AIzaSyAV2lp4BtzUz4VkI42acFlxvYs7nacTBMY")
+
 vectorStore = Chroma.from_documents(
-        documents=get_documents_from_pdf("uploads"),
-        collection_name="rag-chroma",
-        embedding=OpenAIEmbeddings(),
-    )
+    documents=get_documents_from_pdf("uploads"),
+    collection_name="rag-chroma",
+    embedding=embeddings
+)
+
 @chat_advance.route("/sync", methods=["GET", "POST"])
 def sync():
     vectorStore = Chroma.from_documents(
@@ -263,7 +261,7 @@ def get_Chat_response(text):
     #response = app.invoke({"question": text}, {"configurable": {"thread_id": "42"}})
     response = app.invoke({'messages':("user",text)},  {"configurable": {"thread_id": session['thread_id']}})
 
-    return response['messages'][-1].content
+    return  markdown.markdown(response['messages'][-1].content)
 
 class State(TypedDict):
   # Messages have the type "list". The `add_messages` function
@@ -308,10 +306,16 @@ if __name__ == '__main__':
     checkpointer = MemorySaver()
     app = workflow.compile(checkpointer=checkpointer)
 
-    llm = ChatOpenAI(
-        model="gpt-3.5-turbo-1106",
-        temperature=0.4
-    )
+    
 
+    # llm = ChatOpenAI(
+    #     model="gpt-3.5-turbo-1106",
+    #     temperature=0.4
+    # )
+    llm = ChatGoogleGenerativeAI(
+        model="models/gemini-3-flash-preview", 
+        temperature=0.4,
+        api_key="AIzaSyAV2lp4BtzUz4VkI42acFlxvYs7nacTBMY"
+    )
     chat_advance.run(debug=True, port=5000, host="0.0.0.0")
     
